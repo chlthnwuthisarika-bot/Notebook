@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>สมุดบันทึก</title>
+<style>
+:root{--bg:#f4f5f7;--card:#fff;--tx:#1b1e24;--mut:#6b7280;--ac:#2563eb;--acx:#fff;--bd:#e3e6eb;--ok:#16a34a;--no:#dc2626;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101216;--card:#1a1d23;--tx:#eceef2;--mut:#9aa1ad;--ac:#5b8cff;--acx:#0b1020;--bd:#2a2e36;--ok:#22c55e;--no:#f87171}}
+:root[data-theme="dark"]{--bg:#101216;--card:#1a1d23;--tx:#eceef2;--mut:#9aa1ad;--ac:#5b8cff;--acx:#0b1020;--bd:#2a2e36;--ok:#22c55e;--no:#f87171}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans Thai",sans-serif;font-size:16px;line-height:1.45;max-width:640px;margin-inline:auto;padding-bottom:100px}
+header{padding:14px 16px 8px}
+h1{margin:0 0 8px;font-size:22px}
+input,textarea,select{width:100%;font:inherit;color:var(--tx);background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px}
+textarea{resize:vertical;min-height:80px}
+button{font:inherit;border:0;border-radius:12px;padding:12px 16px;background:var(--ac);color:var(--acx);font-weight:600}
+button.s{background:var(--card);color:var(--tx);border:1px solid var(--bd)}
+button.g{background:transparent;color:var(--no);padding:4px 8px}
+.cal{margin-top:10px;background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:10px}
+.ch{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.ch button{padding:6px 14px}
+.cg{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}
+.cg i{font-style:normal;color:var(--mut);font-size:12px}
+.dy{background:var(--bg);color:var(--tx);border:1px solid var(--bd);padding:4px 0;min-height:46px;font-weight:500;border-radius:10px}
+.dy.td{font-weight:800;color:var(--ac)}
+.dy.on{outline:2px solid var(--ac)}
+.dy u{display:block;text-decoration:none;margin:2px auto 0;width:max-content;min-width:18px;background:var(--ok);color:#fff;font-size:11px;line-height:16px;border-radius:99px;padding:0 5px}
+.list{padding:8px 16px;display:grid;gap:12px}
+.dh{padding:6px 4px 0;color:var(--mut);font-weight:600;font-size:14px}
+.card{background:var(--card);border:1px solid var(--bd);border-left:6px solid var(--no);border-radius:16px;overflow:hidden}
+.card.ok{border-left-color:var(--ok)}
+.gal{display:flex;gap:2px}
+.card .gal img{flex:1;min-width:0;height:200px;object-fit:cover;display:block}
+.cb{padding:12px 14px}
+.cb h3{margin:0 0 4px;font-size:17px}
+.cb p{margin:0 0 8px;white-space:pre-wrap;word-break:break-word}
+.meta{display:flex;justify-content:space-between;align-items:center;color:var(--mut);font-size:13px}
+.bd{font-weight:700;color:var(--no)}
+.card.ok .bd{color:var(--ok)}
+.fab{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));width:60px;height:60px;border-radius:50%;font-size:30px;padding:0;box-shadow:0 6px 18px rgba(0,0,0,.3)}
+.sheet{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:flex-end;z-index:20}
+.sheet.on{display:flex}
+.panel{background:var(--bg);width:100%;max-width:640px;margin-inline:auto;border-radius:20px 20px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom,0px));display:grid;gap:10px;max-height:92vh;overflow-y:auto}
+.row{display:flex;gap:8px}.row>*{flex:1}
+.btn{position:relative;overflow:hidden;text-align:center;border-radius:12px;padding:12px 16px;font-weight:600;background:var(--card);color:var(--tx);border:1px solid var(--bd)}
+.btn input{position:absolute;inset:0;opacity:0;width:100%;height:100%;padding:0;border:0;font-size:0}
+.thumbs{display:flex;gap:8px;flex-wrap:wrap}
+.th{position:relative;width:72px;height:72px}
+.th img{width:100%;height:100%;object-fit:cover;border-radius:10px}
+.th b{position:absolute;top:-6px;right:-6px;background:var(--no);color:#fff;border-radius:50%;width:22px;height:22px;text-align:center;line-height:22px;font-size:14px}
+#cnt{font-weight:700;color:var(--no)}#cnt.ok{color:var(--ok)}
+.empty{text-align:center;color:var(--mut);padding:40px 20px}
+.lb{position:fixed;inset:0;background:#000;display:none;align-items:center;justify-content:center;z-index:30}
+.lb.on{display:flex}.lb img{max-width:100%;max-height:100%}
+</style>
+</head>
+<body>
+<header>
+<h1>📒 สมุดบันทึก</h1>
+<input id="q" type="search" placeholder="ค้นหาชื่อ…">
+<div class="cal">
+<div class="ch"><button class="s" id="pm">‹</button><strong id="mt"></strong><button class="s" id="nm">›</button></div>
+<div class="cg" id="cg"></div>
+</div>
+</header>
+<div class="list" id="list"></div>
+<button class="fab" id="add" aria-label="เพิ่ม">+</button>
+
+<div class="sheet" id="sheet">
+<div class="panel">
+<strong>เพิ่มคนใหม่</strong>
+<input id="t" placeholder="ชื่อคน">
+<label style="color:var(--mut);font-size:14px">วันที่ของคนนี้</label>
+<input id="d" type="date">
+<textarea id="n" placeholder="รายละเอียด"></textarea>
+<select id="c"><option>ทั่วไป</option><option>งาน</option><option>เครื่องจักร</option><option>ส่วนตัว</option></select>
+<div id="cnt"></div>
+<div class="thumbs" id="thumbs"></div>
+<div class="row">
+<label class="btn">📷 ถ่ายรูป<input id="f1" type="file" accept="image/*" capture="environment"></label>
+<label class="btn">🖼️ เลือกรูป<input id="f2" type="file" accept="image/*" multiple></label>
+</div>
+<div class="row">
+<button class="s" id="cancel">ยกเลิก</button>
+<button id="save">บันทึก</button>
+</div>
+</div>
+</div>
+<div class="lb" id="lb"><img id="lbi" alt=""></div>
+
+<script>
+const $=id=>document.getElementById(id),p=n=>String(n).padStart(2,"0"),NEED=3;
+let db=null,mem=[],imgs=[],sel="",vm=new Date();
+vm.setDate(1);
+
+function openDB(){return new Promise(res=>{try{const r=indexedDB.open("logger",1);r.onupgradeneeded=()=>r.result.createObjectStore("e",{keyPath:"id"});r.onsuccess=()=>res(r.result);r.onerror=()=>res(null)}catch(e){res(null)}})}
+function all(){return new Promise(res=>{if(!db)return res(mem.slice());try{const r=db.transaction("e").objectStore("e").getAll();r.onsuccess=()=>res(r.result||[]);r.onerror=()=>res([])}catch(e){res([])}})}
+function put(o){return new Promise(res=>{if(!db){mem.push(o);return res()}try{const tx=db.transaction("e","readwrite");tx.objectStore("e").put(o);tx.oncomplete=()=>res();tx.onerror=()=>res()}catch(e){mem.push(o);res()}})}
+function del(id){return new Promise(res=>{if(!db){mem=mem.filter(x=>x.id!==id);return res()}try{const tx=db.transaction("e","readwrite");tx.objectStore("e").delete(id);tx.oncomplete=()=>res();tx.onerror=()=>res()}catch(e){res()}})}
+
+function shrink(file){return new Promise(res=>{const u=URL.createObjectURL(file),i=new Image();i.onload=()=>{const s=Math.min(1,1000/Math.max(i.width,i.height)),c=document.createElement("canvas");c.width=Math.round(i.width*s);c.height=Math.round(i.height*s);c.getContext("2d").drawImage(i,0,0,c.width,c.height);URL.revokeObjectURL(u);res(c.toDataURL("image/jpeg",0.78))};i.onerror=()=>res(null);i.src=u})}
+
+function esc(s){const d=document.createElement("div");d.textContent=s;return d.innerHTML}
+function ymd(d){return d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate())}
+function dk(e){return e.d||ymd(new Date(e.ts))}
+function pics(e){return e.imgs||(e.img?[e.img]:[])}
+function fmt(k){const[y,m,d]=k.split("-").map(Number);return new Date(y,m-1,d).toLocaleDateString("th-TH",{weekday:"short",day:"numeric",month:"short",year:"numeric"})}
+
+function drawThumbs(){
+  $("thumbs").innerHTML=imgs.map((s,i)=>`<div class="th"><img src="${s}" alt=""><b data-x="${i}">×</b></div>`).join("");
+  const ok=imgs.length>=NEED;
+  $("cnt").className=ok?"ok":"";
+  $("cnt").textContent=(ok?"✅ รูปครบ ":"⚠️ รูปยังไม่ครบ ")+imgs.length+"/"+NEED;
+}
+
+function drawCal(cnt){
+  const y=vm.getFullYear(),m=vm.getMonth(),first=new Date(y,m,1).getDay(),n=new Date(y,m+1,0).getDate(),td=ymd(new Date());
+  $("mt").textContent=vm.toLocaleDateString("th-TH",{month:"long",year:"numeric"});
+  let h=["อา","จ","อ","พ","พฤ","ศ","ส"].map(x=>`<i>${x}</i>`).join("")+"<span></span>".repeat(first);
+  for(let d=1;d<=n;d++){
+    const k=y+"-"+p(m+1)+"-"+p(d),c=cnt[k];
+    h+=`<button class="dy${k===sel?" on":""}${k===td?" td":""}" data-k="${k}">${d}${c?`<u>${c}</u>`:""}</button>`;
+  }
+  $("cg").innerHTML=h;
+}
+
+async function render(){
+  const q=$("q").value.trim().toLowerCase();
+  const all0=await all(),cnt={};
+  all0.forEach(e=>{const k=dk(e);cnt[k]=(cnt[k]||0)+1});
+  drawCal(cnt);
+  let a=all0.slice().sort((x,y)=>dk(y).localeCompare(dk(x))||y.ts-x.ts);
+  if(sel)a=a.filter(e=>dk(e)===sel);
+  if(q)a=a.filter(e=>(e.t+" "+e.n+" "+e.c).toLowerCase().includes(q));
+  const L=$("list");
+  if(!a.length){L.innerHTML='<div class="empty">ไม่พบรายการ<br>กดปุ่ม + เพื่อเพิ่มคน</div>';return}
+  let last="";
+  L.innerHTML=a.map(e=>{
+    const k=dk(e),h=k!==last?`<div class="dh">📅 ${fmt(k)}</div>`:"";last=k;
+    const im=pics(e),ok=im.length>=NEED;
+    return h+`<div class="card${ok?" ok":""}">${im.length?`<div class="gal">${im.map(s=>`<img src="${s}" alt="">`).join("")}</div>`:""}<div class="cb"><h3>${esc(e.t)}</h3>${e.n?`<p>${esc(e.n)}</p>`:""}<div class="meta"><span><span class="bd">${ok?"✅ รูปครบ":"⚠️ รูปไม่ครบ"} ${im.length}/${NEED}</span> · ${esc(e.c)}</span><button class="g" data-d="${e.id}">ลบ</button></div></div></div>`;
+  }).join("");
+}
+
+$("add").onclick=()=>{$("t").value="";$("n").value="";imgs=[];drawThumbs();$("d").value=sel||ymd(new Date());$("sheet").classList.add("on")};
+$("cancel").onclick=()=>$("sheet").classList.remove("on");
+async function pick(e){
+  const fs=[...e.target.files];e.target.value="";
+  for(const f of fs){const s=await shrink(f);if(s)imgs.push(s)}
+  drawThumbs();
+}
+$("f1").onchange=pick;
+$("f2").onchange=pick;
+$("thumbs").onclick=e=>{const i=e.target.dataset.x;if(i!==undefined){imgs.splice(+i,1);drawThumbs()}};
+$("save").onclick=async()=>{
+  const t=$("t").value.trim();
+  if(!t&&!imgs.length){$("t").focus();return}
+  await put({id:Date.now()+"",t:t||"(ไม่มีชื่อ)",n:$("n").value.trim(),c:$("c").value,imgs,d:$("d").value||ymd(new Date()),ts:Date.now()});
+  $("sheet").classList.remove("on");render();
+};
+$("list").onclick=async e=>{
+  if(e.target.matches(".gal img")){$("lbi").src=e.target.src;$("lb").classList.add("on");return}
+  const id=e.target.dataset.d;
+  if(id&&confirm("ลบรายการนี้?")){await del(id);render()}
+};
+$("cg").onclick=e=>{const b=e.target.closest(".dy");if(!b)return;sel=sel===b.dataset.k?"":b.dataset.k;render()};
+$("pm").onclick=()=>{vm.setMonth(vm.getMonth()-1);render()};
+$("nm").onclick=()=>{vm.setMonth(vm.getMonth()+1);render()};
+$("q").oninput=render;
+$("lb").onclick=()=>$("lb").classList.remove("on");
+openDB().then(d=>{db=d;render()});
+</script>
+</body>
+</html>
